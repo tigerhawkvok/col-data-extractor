@@ -1,7 +1,7 @@
 """
 CLI wrapper for clean_source_data.py
 """
-import time, os, glob, sys, qinput, string, yn
+import os, qinput
 import clean_source_data
 
 path = None

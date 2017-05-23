@@ -12,7 +12,7 @@ Arguments:
 @date 2017.05.22
 @url https://github.com/tigerhawkvok/col-data-extractor
 """
-import time, os, glob, sys, qinput, string, yn
+import os, sys
 
 # Check command line args
 
@@ -162,8 +162,4 @@ def cleanCSV(path=defaultFile, newPath=outputFile):
             # Append the cleaned row back on
             cleanRows.writerow(row)
         return newPath
-
-
-
-
-
+# EOF
