@@ -72,7 +72,7 @@ def preflight():
     return True
 
 
-def cleanCSV(path=defaultFile, newPath=outputFile):
+def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ","):
     """
     Clean a CSV file and return a column subset run through a cleaning sanitizer
     """
@@ -94,7 +94,7 @@ def cleanCSV(path=defaultFile, newPath=outputFile):
         print(sys.exc_info[0])
         doExit()
     import csv
-    rows = csv.reader(contents.split("\n"), delimiter=",")
+    rows = csv.reader(contents.split("\n"), delimiter=csvDelimiter)
     colDefs = {}
     rowBuilder = {}
     canonicalIndex = 0
