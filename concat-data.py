@@ -43,6 +43,7 @@ elif len(files) is 0:
   files = tmp
 ignorePattern = glob.glob(searchPath + "*-formatted.csv")
 useFiles = set(files) - set(ignorePattern)
+usedFiles = list()
 print("Found files:")
 for file in useFiles:
     print("\t"+file)
@@ -50,6 +51,7 @@ if yn.yn("Is that right?"):
     print("DO THE THING JU-LI")
     dataList = list()
     for file in useFiles:
+      usedFiles.append(file)
       tmp = file.split(".")
       ext = tmp.pop()
       if ext in tsv:
@@ -67,6 +69,8 @@ if yn.yn("Is that right?"):
         except IndexError:
           sheet.append(list())
         for col in row:
+          if col == "est_counts":
+            col = usedFiles[i]
           sheet[j].append(col)
     # Now we have a full sheet
     import csv

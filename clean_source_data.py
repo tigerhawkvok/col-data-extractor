@@ -24,7 +24,6 @@ columnsToImport = [
 ]
 
 renameColumns = {
-    "est_counts": "RENAMEWHOO"
 }
 
 canonicalColumn = "target_id"
@@ -72,7 +71,7 @@ def preflight():
     return True
 
 
-def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ","):
+def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ",", colMap=renameColumns):
     """
     Clean a CSV file and return a column subset run through a cleaning sanitizer
     """
@@ -113,8 +112,8 @@ def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ","):
                     # Check to see if the columns are valid
                 if columnsToImport is not None:
                     if column in columnsToImport:
-                        if column in renameColumns:
-                            column = renameColumns[column]
+                        if column in colMap:
+                            column = colMap[column]
                         headerRow.append(column)
         else:
             # All other rows
