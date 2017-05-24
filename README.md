@@ -58,5 +58,4 @@ python3 concat_data.py
 
 ## TODO
 
-- the `[Y/N]` inputs can require the button to be pressed twice on some systems due to a behaviour change in Python 3.2
 - `clean_source_data.py` and `concat_data.py` needs to take in CLI arguments to be wholly called by script
