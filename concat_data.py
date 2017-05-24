@@ -90,9 +90,13 @@ if hasConfirmed:
           sheet[j].append(col)
     # Now we have a full sheet
     import csv
-    newFile = open("concat-data.csv", "w", newline='')
+    fileName = "concat-data.csv"
+    newFile = open(fileName, "w", newline='')
     combined = csv.writer(newFile, delimiter=",", quoting=csv.QUOTE_ALL)
+    i = 0
     for row in sheet:
       combined.writerow(row)
+      i += 1
+    print("Successfully wrote "+str(i)+" rows to file ./"+fileName)
 else:
     print("Exiting...")
