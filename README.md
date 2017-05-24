@@ -26,6 +26,8 @@ It can:
 - Output only a subset of columns
 - Returns a sorted list based on `canonicalColumn`
 
+The other two helper functions call this. **If you want to change global behaviour, change the configuration options at the top of this file**.
+
 ### `create_csv.py`
 
 This function will walk you through CLI prompts to bring in an input file, and spit out a subsetted output. To run it, run
@@ -39,6 +41,11 @@ python3 create_csv.py
 ### `concat_data.py`
 
 This function will search your directory for all valid filetypes (`xprs`, `csv`, and `tsv`) not created by the application itself and return a single CSV file with the columns side-by-side.
+
+#### Features
+
+- Map a column header automatically based on files found
+- Crawls a directory either recursively or shallowly, verifying the file list at runtime
 
 To run it, run
 
