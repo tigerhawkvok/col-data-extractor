@@ -8,6 +8,10 @@ def buildGroupedDataset(listOfDatasets):
     False
 
 
+accepts = [
+
+]
+
 tsv = [
     "xprs",
     "tsv"
@@ -15,9 +19,12 @@ tsv = [
 
 defaultPath = "./"
 path = None
+print("Please input the directory to your working data files")
+print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
+print("e.g., '/Users/jdoe/Desktop' and not '~/Desktop'")
 while path is None:
     try:
-        path = qinput.input("Please input the directory to your working CSV files (default '"+defaultPath+"'): ")
+        path = qinput.input("Path: (default '"+defaultPath+"'): ")
         if path == "":
             path = defaultPath
         if not os.path.exists(path):
@@ -32,7 +39,7 @@ searchPath = path + ""
 
 files = glob.glob(searchPath + "*.xprs") + glob.glob(searchPath + "*.csv") +  glob.glob(searchPath + "*.tsv")
 filesDeep = glob.glob(searchPath + "**/*.xprs", recursive=True) + glob.glob(searchPath + "**/*.csv", recursive=True) +  glob.glob(searchPath + "**/*.tsv", recursive=True)
-ignorePattern = glob.glob(searchPath + "*-formatted.csv") + glob.glob(searchPath + "concat-data.csv")
+ignorePattern = glob.glob(searchPath + "*-formatted.csv") + glob.glob(searchPath + "concat-data.csv") + glob.glob(searchPath + "*-concat.csv")
 useFiles = set(files) - set(ignorePattern)
 useFilesDeep = set(filesDeep) - set(ignorePattern)
 usedFiles = list()
