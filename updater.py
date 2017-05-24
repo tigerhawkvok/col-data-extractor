@@ -1,4 +1,6 @@
 """
+Auto-update
+
 @
 """
 
@@ -90,11 +92,29 @@ try:
                 os.unlink(".gitversion")
             except:
                 print("Could not delete the version file. Be sure to maually delete '.gitversion' before re-running the new version.")
-            print("Launching browser. Rerun the script when you've updated.")
-            import webbrowser
-            # Can probably download this ...
-            webbrowser.open("https://github.com/tigerhawkvok/DnD-LLNS-CryptPuzzle/releases")
-            doExit()
+            try:
+                import subprocess
+                c = subprocess.run(["git", "pull"])
+                if c.returncode is not 0:
+                    raise BadExec
+                else:
+                    print("Great, updated! Run this script again to execute with the new version.")
+                    f = open(".gitversion", "w")
+                    read_seconds = time.time()
+                    f.write(str(read_seconds))
+                    f.close()
+                    doExit()
+            except:
+                print("We couldn't automatically update via Git.")
+                print("Launching browser. Rerun the script when you've updated.")
+                import webbrowser
+                # Can probably download this ...
+                try:
+                    dest = obj["html_url"]
+                except:
+                    dest = "https://github.com/tigerhawkvok/col-data-extractor/releases"
+                webbrowser.open(dest)
+                doExit()
         else:
             print("Skipping update.")
 except NameError:
