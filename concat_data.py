@@ -120,6 +120,6 @@ if hasConfirmed:
     for row in sheet:
       combined.writerow(row)
       i += 1
-    print("Successfully wrote "+str(i)+" rows to file ./"+fileName)
+    print("Successfully wrote "+str(i)+" rows to file '"+os.getcwd()+"/"+fileName+"'")
 else:
     print("Exiting...")
