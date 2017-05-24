@@ -70,7 +70,7 @@ def preflight(checkVersion=True):
         import sys
         version = sys.version_info
         if version[0] < 3:
-            print(">>>WARNING: This application was tested and written for Python 3.5+ (you're running '"+".".join(str(v) for v in version)+"'). Things may break!<<<")
+            print(">>>WARNING: This application was tested and written for Python 3.5+ (you're running '"+".".join(str(v) for v in version)+"'). Things may break, and you will have reduced functionality!<<<")
             print("")
         elif version[1] < 5:
             print(">>>NOTICE: This application was written Python 3.5+. Things may break or you may experience reduced functionality for your version '"+".".join(str(v) for v in version)+"'<<<")

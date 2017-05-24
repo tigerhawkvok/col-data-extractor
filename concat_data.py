@@ -52,13 +52,24 @@ if os.path.exists(fileName):
         clean_source_data.doExit()
 # Check writeable
 try:
-    newFile = open(fileName, "w", newline='')
-except PermissionError:
-    print("")
-    print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
-    print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
-    print("then try to run this again.")
-    clean_source_data.doExit()
+    try:
+        newFile = open(fileName, "w", newline='')
+    except PermissionError:
+        print("")
+        print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
+        print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
+        print("then try to run this again.")
+        clean_source_data.doExit()
+except NameError:
+    # Python 2
+    try:
+        newFile = open(fileName, "w")
+    except IOError:
+        print("")
+        print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
+        print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
+        print("then try to run this again.")
+        clean_source_data.doExit()
 # Get path
 print("Please input the directory to your working data files")
 print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
