@@ -71,7 +71,7 @@ def preflight():
     return True
 
 
-def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ",", colMap=renameColumns):
+def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ",", colMap=renameColumns, messageInterval = 500):
     """
     Clean a CSV file and return a column subset run through a cleaning sanitizer
     """
@@ -140,7 +140,7 @@ def cleanCSV(path=defaultFile, newPath=outputFile, csvDelimiter = ",", colMap=re
                 print("IndexError out of range for '"+str(canonicalIndex)+"'")
             # Assign the row to a dict value
             rowBuilder[canonicalValue] = builtRow
-        if i%500 is 0 and i > 0:
+        if i % messageInterval is 0 and i > 0:
             print("Cleaned", i, "rows...")
     print("Finished cleaning", i, "rows.")
     # Write out the pretty list

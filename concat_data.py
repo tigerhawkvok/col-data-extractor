@@ -31,15 +31,39 @@ if path[-1:] != "/":
 searchPath = path + ""
 
 files = glob.glob(searchPath + "*.xprs") + glob.glob(searchPath + "*.csv") +  glob.glob(searchPath + "*.tsv")
+filesDeep = glob.glob(searchPath + "**/*.xprs", recursive=True) + glob.glob(searchPath + "**/*.csv", recursive=True) +  glob.glob(searchPath + "**/*.tsv", recursive=True)
 ignorePattern = glob.glob(searchPath + "*-formatted.csv") + glob.glob(searchPath + "concat-data.csv")
 useFiles = set(files) - set(ignorePattern)
+useFilesDeep = set(filesDeep) - set(ignorePattern)
 usedFiles = list()
+hasConfirmed = None
 print("Found files:")
 for file in useFiles:
     print("\t"+file)
-if yn.yn("Is that right?"):
+if useFiles != useFilesDeep:
+    print("But a deep search found:")
+    for file in useFilesDeep:
+        print("\t"+file)
+    if yn.yn("Do you want to use the deep result?"):
+        useFiles = useFilesDeep
+        hasConfirmed = True
+    else:
+        hasConfirmed = False
+if hasConfirmed is False:
+    # Only re-verify the file list if we've explicitly
+    # rejected the deep list before
+    print("So, the shallow then:")
+    for file in useFiles:
+        print("\t"+file)
+if hasConfirmed is not True:
+    # However, whether or not we need to re-view the file list,
+    # we should confirm it -- it may still be on the screen
+    # if the deep and shallow results are the same (so hasConfirmed is None)
+    hasConfirmed = yn.yn("Is that right?")
+if hasConfirmed:
     print("DO THE THING JU-LI")
     dataList = list()
+    i = 0
     for file in useFiles:
       usedFiles.append(file)
       tmp = file.split(".")
@@ -48,8 +72,10 @@ if yn.yn("Is that right?"):
         d = "\t"
       else:
         d = ","
-      data = clean_source_data.cleanCSV(file, True, d)
+      data = clean_source_data.cleanCSV(file, True, d, messageInterval=5000)
       dataList.append(data)
+      i += 1
+      print("File "+str(i)+" of "+str(len(useFiles))+" complete")
     # Now we have a list of the data
     sheet = list()
     for i, dataSheet in enumerate(dataList):
