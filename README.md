@@ -2,13 +2,15 @@
 
 ## Dependencies
 
-The only thing you should need to install is Python 3.x. To check if you have it, run `python --version` at your terminal. If that isn't 3.x, try `python3 --version`. If this second command throws an error, you don't have Python 3.x installed.
+The only thing you should need to install is Python 3.5+. To check if you have it, run `python --version` at your terminal. If that isn't 3.5+, try `python3 --version`. If this second command throws an error, you don't have Python 3.x installed.
 
 Install it with Homebrew:
 
 ```
 brew install python3
 ```
+
+If you for some reason really can't install Python 3.5+, it should run OK on Python 2, but it has not been extensively debugged and you will miss some functionality (like recursive directory searching).
 
 ## What it does
 
