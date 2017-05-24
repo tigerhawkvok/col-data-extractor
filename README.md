@@ -2,13 +2,15 @@
 
 ## Dependencies
 
-The only thing you should need to install is Python 3.x. To check if you have it, run `python --version` at your terminal. If that isn't 3.x, try `python3 --version`. If this second command throws an error, you don't have Python 3.x installed.
+The only thing you should need to install is Python 3.5+. To check if you have it, run `python --version` at your terminal. If that isn't 3.5+, try `python3 --version`. If this second command throws an error, you don't have Python 3.x installed.
 
 Install it with Homebrew:
 
 ```
 brew install python3
 ```
+
+If you for some reason really can't install Python 3.5+, it should run OK on Python 2, but it has not been extensively debugged and you will miss some functionality (like recursive directory searching).
 
 ## What it does
 
@@ -55,6 +57,31 @@ python3 concat_data.py
 
 (or just `python` if Python 3.0+ is your default)
 
+
+## Dude, I just want to run this from my source code.
+
+You're probably a sad sad person who has to use [R](https://www.r-project.org/). I'm sorry. But you can still use this!
+
+[via the R documentation:](https://stat.ethz.ch/R-manual/R-devel/library/base/html/system2.html)
+
+>Description
+>
+>`system2` invokes the OS command specified by command.
+>
+>Usage
+>
+>```
+>system2(command, args = character(),
+>        stdout = "", stderr = "", stdin = "", input = NULL,
+>        env = character(), wait = TRUE,
+>        minimized = FALSE, invisible = TRUE)
+>```
+
+So just include in your code:
+
+```R
+system2("python FILE_TO_RUN.py")
+```
 
 ## TODO
 
