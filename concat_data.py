@@ -35,7 +35,14 @@ fileName = "concat-data.csv"
 print("*********************************************************************")
 print("Data Concatenator")
 print("*********************************************************************")
-print("Press Ctrl+C any time to exit")
+print("")
+if clean_source_data.preflight():
+    print("For global configuration options on your whole dataset, please manually edit the top of `clean_source_data.py`")
+else:
+    print("WARNING: The global configuration options in `clean_source_data.py` might not be sane;")
+    print("if your data seem malformed, please verify the configuration.")
+print("")
+print("Press Ctrl+c any time to exit")
 print("")
 # First, make sure the overwrite will be OK. Save typing for the user!
 if os.path.exists(fileName):
@@ -43,6 +50,15 @@ if os.path.exists(fileName):
         print("OK -- please save your data to a different location then run this again.")
         print("We'll ignore any files ending in '-concat.csv', such as  'myData-concat.csv'")
         clean_source_data.doExit()
+# Check writeable
+try:
+    newFile = open(fileName, "w", newline='')
+except PermissionError:
+    print("")
+    print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
+    print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
+    print("then try to run this again.")
+    clean_source_data.doExit()
 # Get path
 print("Please input the directory to your working data files")
 print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
@@ -249,7 +265,6 @@ if hasConfirmed:
             sheet[j].append(col)
     # Now we have a full sheet
     import csv
-    newFile = open(fileName, "w", newline='')
     combined = csv.writer(newFile, delimiter=",", quoting=csv.QUOTE_ALL)
     i = 0
     for row in sheet:

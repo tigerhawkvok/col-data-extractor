@@ -26,6 +26,7 @@ columnsToImport = [
 renameColumns = {
 }
 
+# The sort target column
 canonicalColumn = "target_id"
 
 # Define any column sanitizers here
@@ -46,6 +47,9 @@ outputFile = None
 exitScriptPrompt = "Press Control-c to exit."
 
 def doExit():
+    """
+    Force a system exit
+    """
     import os,sys
     print("\n")
     os._exit(0)
@@ -63,9 +67,13 @@ def preflight():
     Check to make sure that some of the basic setup is sane
     """
     if columnsToImport is not None:
+        # We have to sanity check since we're only working with a subset
         for col in renameColumns.keys():
+            # Ensure that if we're specifying columns to rename globally,
+            # they're ones we're importing
             if not col in columnsToImport:
                 return False
+        # Ensure that the canonical column is among those imported
         if not canonicalColumn in columnsToImport:
             return False
     return True
