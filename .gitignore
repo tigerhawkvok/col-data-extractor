@@ -72,3 +72,4 @@ install.php
 concat-data.csv
 *-formatted.csv
 testfile.csv
+.gitversion
