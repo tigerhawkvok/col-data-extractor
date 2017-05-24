@@ -17,11 +17,21 @@ tsv = [
     "tsv"
 ]
 
+# Set up the defaults
 defaultPath = "./"
 path = None
+fileName = "concat-data.csv"
+
+# Start user output
 print("*********************************************************************")
 print("Data Concatenator")
 print("*********************************************************************")
+# First, make sure the overwrite will be OK. Save typing for the user!
+if os.path.exists(fileName):
+    if not yn.yn("WARNING: This will overwrite '"+os.getcwd()+"/"+fileName+"'. Is that OK?"):
+        print("OK -- please save your data then run this again.")
+        clean_source_data.doExit()
+# Get feedback
 print("Please input the directory to your working data files")
 print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
 print("e.g., '/Users/jdoe/Desktop' and not '~/Desktop'")
@@ -104,7 +114,6 @@ if hasConfirmed:
           sheet[j].append(col)
     # Now we have a full sheet
     import csv
-    fileName = "concat-data.csv"
     newFile = open(fileName, "w", newline='')
     combined = csv.writer(newFile, delimiter=",", quoting=csv.QUOTE_ALL)
     i = 0
