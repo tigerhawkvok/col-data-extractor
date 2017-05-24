@@ -122,6 +122,9 @@ if hasConfirmed:
     dataList = list()
     i = 0
     for file in useFiles:
+      # We build the list here since the order of a set isn't guaranteed
+      # But the order of a list is -- so when we need the file order later,
+      # it'll be correct
       usedFiles.append(file)
       tmp = file.split(".")
       ext = tmp.pop()
@@ -198,8 +201,26 @@ if hasConfirmed:
                 }
             elif mapChoice is 2:
                 # Parse a list from the user ...
-                print("TODO")
-                pass
+                print("For this file order:")
+                for file in usedFiles:
+                    print("\t"+file)
+                print("Write a list of column names, separated by commas.")
+                while userHeaderMap is None:
+                    try:
+                        uhmRaw = qinput.input("List: ")
+                        userHeaderMapDirty = uhmRaw.split(",")
+                        if len(userHeaderMapDirty) is not len(usedFiles):
+                            print("Sorry, that has "+str(len(userHeaderMapDirty))+" of "+str(len(usedFiles))+" files described")
+                        else:
+                            userHeaderMap = list()
+                            for newHeaderLabel in userHeaderMapDirty:
+                                userHeaderMap.append(newHeaderLabel.strip())
+                    except KeyboardInterrupt:
+                        clean_source_data.doExit()
+                # Define the map
+                remapFn = {
+                    "header": lambda docIndex: userHeaderMap[docIndex]
+                }
         else:
             print("No headers found, continuing")
     # Now we have a list of the data as a list of lists
