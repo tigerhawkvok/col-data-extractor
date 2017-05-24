@@ -31,7 +31,11 @@ while path is None:
         if path == "":
             path = defaultPath
         if not os.path.exists(path):
-            print("Invalid path '"+path+"'. Please try again")
+            try:
+                feedbackPath = os.path.abspath(path)
+            except:
+                feedbackPath = path
+            print("Invalid path '"+feedbackPath+"'. Please try again")
             path = None
     except KeyboardInterrupt:
         clean_source_data.doExit()
