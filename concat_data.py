@@ -19,6 +19,9 @@ tsv = [
 
 defaultPath = "./"
 path = None
+print("*********************************************************************")
+print("Data Concatenator")
+print("*********************************************************************")
 print("Please input the directory to your working data files")
 print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
 print("e.g., '/Users/jdoe/Desktop' and not '~/Desktop'")
