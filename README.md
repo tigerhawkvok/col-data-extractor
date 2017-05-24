@@ -1,5 +1,14 @@
 # col-data-extractor
 
+## Dependencies
+
+The only thing you should need to install is Python 3.x. To check if you have it, run `python --version` at your terminal. If that isn't 3.x, try `python3 --version`. If this second command throws an error, you don't have Python 3.x installed.
+
+Install it with Homebrew:
+
+```
+brew install python3
+```
 
 ## What it does
 
@@ -7,7 +16,7 @@ There are several sub-files:
 
 ### `clean_source_data.py`
 
-This is the workhorse peice of code. It can be manually configured by changing the defaults at the top. 
+This is the workhorse peice of code. It can be manually configured by changing the defaults at the top.
 This file will read a [delimiter] separated file and clean the input, returning an optional subset of columns.
 
 It can:
@@ -42,6 +51,5 @@ python3 concat_data.py
 
 ## TODO
 
-- Mixed filetypes in a directory can cause `concat_data.py` to intermittently crap out
 - the `[Y/N]` inputs can require the button to be pressed twice on some systems due to a behaviour change in Python 3.2
 - `clean_source_data.py` and `concat_data.py` needs to take in CLI arguments to be wholly called by script

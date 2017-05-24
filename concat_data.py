@@ -30,18 +30,8 @@ if path[-1:] != "/":
 
 searchPath = path + ""
 
-files = glob.glob(searchPath + "*.xprs")
-tmp = glob.glob(searchPath + "*.csv")
-if len(files) > 0 and len(tmp) > 0:
-  files = set(files).update(set(tmp))
-elif len(files) is 0:
-  files = tmp
-tmp = glob.glob(searchPath + "*.tsv")
-if len(files) > 0 and len(tmp) > 0:
-  files = set(files).update(set(tmp))
-elif len(files) is 0:
-  files = tmp
-ignorePattern = glob.glob(searchPath + "*-formatted.csv")
+files = glob.glob(searchPath + "*.xprs") + glob.glob(searchPath + "*.csv") +  glob.glob(searchPath + "*.tsv")
+ignorePattern = glob.glob(searchPath + "*-formatted.csv") + glob.glob(searchPath + "concat-data.csv")
 useFiles = set(files) - set(ignorePattern)
 usedFiles = list()
 print("Found files:")
