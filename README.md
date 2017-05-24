@@ -58,6 +58,31 @@ python3 concat_data.py
 (or just `python` if Python 3.0+ is your default)
 
 
+## Dude, I just want to run this from my source code.
+
+You're probably a sad sad person who has to use [R](https://www.r-project.org/). I'm sorry. But you can still use this!
+
+[via the R documentation:](https://stat.ethz.ch/R-manual/R-devel/library/base/html/system2.html)
+
+>Description
+>
+>`system2` invokes the OS command specified by command.
+>
+>Usage
+>
+>```
+>system2(command, args = character(),
+>        stdout = "", stderr = "", stdin = "", input = NULL,
+>        env = character(), wait = TRUE,
+>        minimized = FALSE, invisible = TRUE)
+>```
+
+So just include in your code:
+
+```R
+system2("python FILE_TO_RUN.py")
+```
+
 ## TODO
 
 - `clean_source_data.py` and `concat_data.py` needs to take in CLI arguments to be wholly called by script
