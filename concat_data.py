@@ -90,6 +90,9 @@ while path is None:
                 feedbackPath = os.path.abspath(path)
             except:
                 feedbackPath = path
+            finally:
+                # Add a trailing slash so weird characters at the end become obvious
+                feedbackPath += "/"
             print("It looks like path '"+feedbackPath+"' doesn't exist, or possibly isn't readable by this program. Please try again.")
             path = None
     except KeyboardInterrupt:
