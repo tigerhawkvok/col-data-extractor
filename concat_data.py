@@ -80,6 +80,8 @@ while path is None:
         path = qinput.input("Path: (default '"+defaultPath+"'): ")
         if path == "":
             path = defaultPath
+        # Trim any whitespace
+        path = path.strip()
         if not os.path.exists(path):
             # Try to give the response helpfully --
             # ideally the feedback will be the canonical path, so
@@ -88,7 +90,7 @@ while path is None:
                 feedbackPath = os.path.abspath(path)
             except:
                 feedbackPath = path
-            print("Invalid path '"+feedbackPath+"'. Please try again")
+            print("It looks like path '"+feedbackPath+"' doesn't exist, or possibly isn't readable by this program. Please try again.")
             path = None
     except KeyboardInterrupt:
         clean_source_data.doExit()
