@@ -21,7 +21,18 @@ class _Getch:
 
     def __call__(self):
         # Return as a string
-        return self.impl().encode().decode('utf-8')
+        try:
+            return self.impl().encode().decode('utf-8')
+        except KeyboardInterrupt:
+            self.doExit()
+    def doExit():
+        """
+        Force a system exit
+        """
+        import os,sys
+        print("\n")
+        os._exit(0)
+        sys.exit(0)
 
 
 class _GetchUnix:
@@ -35,6 +46,8 @@ class _GetchUnix:
         try:
             tty.setraw(sys.stdin.fileno())
             ch = sys.stdin.read(1)
+        except KeyboardInterrupt:
+            _Getch.doExit()
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
