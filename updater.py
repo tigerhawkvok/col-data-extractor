@@ -95,6 +95,9 @@ try:
             try:
                 import subprocess
                 c = subprocess.run(["git", "pull"])
+                # Give the subprocesses a second to run...
+                import time
+                time.sleep(1)
                 if c.returncode is not 0:
                     raise BadExec
                 else:
