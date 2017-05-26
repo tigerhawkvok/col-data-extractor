@@ -76,7 +76,11 @@ def preflight(checkVersion=True):
             print(">>>NOTICE: This application was written Python 3.5+. Things may break or you may experience reduced functionality for your version '"+".".join(str(v) for v in version)+"'<<<")
             print("")
         else:
-            import updater
+            try:
+                import updater
+            except:
+                # We want this to be a silent error
+                print("NOTICE: Couldn't check for updates")
     if columnsToImport is not None:
         # We have to sanity check since we're only working with a subset
         for col in renameColumns.keys():
