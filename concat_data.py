@@ -125,13 +125,19 @@ usedFiles = list()
 
 hasConfirmed = None
 
-print("Found files:")
-for file in useFiles:
-    print("\t"+file)
+hasShallowFiles = len(useFiles) > 0
+
+if hasShallowFiles:
+    print("A shallow search found "+str(len(useFiles))+" files:")
+    for file in useFiles:
+        print("\t"+file)
 # If the recursive search isn't the same as the shallow search,
 # get the user to disambiguate
-if useFiles != useFilesDeep and len(filesDeep) > 0:
-    print("But a deep search found:")
+if useFiles != useFilesDeep and len(useFilesDeep) > 0:
+    if hasShallowFiles:
+        print("But a deep search found "+str(len(useFilesDeep))+" files:")
+    else:
+        print("A deep search found "+str(len(useFilesDeep))+" files:")
     for file in useFilesDeep:
         print("\t"+file)
     if yn.yn("Do you want to use the deep result?"):
@@ -142,7 +148,11 @@ if useFiles != useFilesDeep and len(filesDeep) > 0:
 if hasConfirmed is False:
     # Only re-verify the file list if we've explicitly
     # rejected the deep list before
-    print("So, the shallow then:")
+    if not hasShallowFiles:
+        print("Since you have no shallow files, we can't proceed.")
+        print("Check your directories and try again.")
+        clean_source_data.doExit()
+    print("So, the shallow files then:")
     for file in useFiles:
         print("\t"+file)
 if hasConfirmed is not True:
@@ -291,4 +301,5 @@ if hasConfirmed:
       i += 1
     print("Successfully wrote "+str(i)+" rows to file '"+os.getcwd()+"/"+fileName+"'")
 else:
+    print("Can't help you there. Check your directory and try again.")
     print("Exiting...")
