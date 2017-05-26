@@ -118,8 +118,8 @@ for extension in acceptsExtensions:
 ignorePattern = glob.glob(searchPath + "*-formatted.csv") + glob.glob(searchPath + "concat-data.csv") + glob.glob(searchPath + "*-concat.csv")
 
 # Reference sets
-useFiles = set(files) - set(ignorePattern)
-useFilesDeep = set(filesDeep) - set(ignorePattern)
+useFiles = sorted(list(set(files) - set(ignorePattern)))
+useFilesDeep = sorted(list(set(filesDeep) - set(ignorePattern)))
 # Placeholder list for later
 usedFiles = list()
 
@@ -191,7 +191,7 @@ if hasConfirmed:
             except:
                 pass
         # Cast to a set to make it unique items
-        headers = list(set(headers))
+        headers = sorted(list(set(headers)))
         if len(headers) > 0:
             print("Found headers:")
             i = 0
