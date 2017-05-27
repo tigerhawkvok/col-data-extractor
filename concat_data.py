@@ -254,17 +254,21 @@ if hasConfirmed:
                     try:
                         uhmRaw = qinput.input("List: ")
                         userHeaderMapDirty = uhmRaw.split(",")
+                        # Do we have the right number of headers?
                         if len(userHeaderMapDirty) is not len(usedFiles):
                             print("Sorry, that has "+str(len(userHeaderMapDirty))+" of "+str(len(usedFiles))+" files described")
                             userHeaderMap = None
                         else:
                             userHeaderMap = list()
                             emptyHeaders = 0
+                            # Check each new label...
                             for newHeaderLabel in userHeaderMapDirty:
                                 cleanNewHeaderLabel = newHeaderLabel.strip()
                                 if len(cleanNewHeaderLabel) is 0:
+                                    # Keep count of headers that were blank
                                     emptyHeaders += 1
                                 userHeaderMap.append(newHeaderLabel.strip())
+                            # If there were any blank headers, feed back to the user
                             if emptyHeaders > 0:
                                 print("Sorry, "+str(emptyHeaders)+" headers you provided were empty. Please try again.")
                                 userHeaderMap = None
