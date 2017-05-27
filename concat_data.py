@@ -2,7 +2,7 @@
 Data Concatenator
 
 Runs a CLI script to read all acceptable files in a directory,
-then concatenates the row subset as per `clean_source_data.py`.
+then concatenates the row subset as per `CleanSourceData.py`.
 
 @author Philip Kahn
 @license MIT
@@ -10,7 +10,8 @@ then concatenates the row subset as per `clean_source_data.py`.
 @url https://github.com/tigerhawkvok/col-data-extractor
 """
 
-import os, glob, qinput, clean_source_data,yn
+import os, glob, qinput,yn
+from CleanSourceData import CleanSourceData
 
 
 acceptsExtensions = [
@@ -32,7 +33,9 @@ def buildGroupedDataset(listOfDatasets, remapper = None):
     """
     Builds a single "sheet" of data from a list of datasets
 
-    @param list listOfDatasets -> a list of lists of rows to be concatenated
+    @list listOfDatasets -> a list of lists of rows to be concatenated
+    @dict remapper -> A dict of remapper lambda fns and identifiers,
+      eg, "header" and "header_identifier" to remap
     @return list -> a flat list of the concatenated rows
     """
     if type(remapper) is dict:
@@ -81,8 +84,8 @@ def outputCSV(sheet, fileObj):
     """
     Output a CSV file
 
-    @param list sheet -> the per-row contents to write
-    @param fileObj -> the
+    @list sheet -> the per-row contents to write
+    @file fileObj -> the file handler to write to
     """
     import csv
     combined = csv.writer(fileObj, delimiter=",", quoting=csv.QUOTE_ALL)
@@ -101,10 +104,10 @@ def main():
     print("Data Concatenator")
     print("*********************************************************************")
     print("")
-    if clean_source_data.preflight():
-        print("For global configuration options on your whole dataset, please manually edit the top of `clean_source_data.py`")
+    if CleanSourceData.preflight():
+        print("For global configuration options on your whole dataset, please manually edit the top of `CleanSourceData.py`")
     else:
-        print("WARNING: The global configuration options in `clean_source_data.py` might not be sane;")
+        print("WARNING: The global configuration options in `CleanSourceData.py` might not be sane;")
         print("if your data seem malformed, please verify the configuration.")
     print("")
     print("Press Ctrl+c any time to exit")
@@ -114,7 +117,7 @@ def main():
         if not yn.yn("WARNING: This will overwrite '"+os.getcwd()+"/"+fileName+"'. Is that OK?"):
             print("OK -- please save your data to a different location then run this again.")
             print("We'll ignore any files ending in '-concat.csv', such as  'myData-concat.csv'")
-            clean_source_data.doExit()
+            CleanSourceData.doExit()
     # Check writeable
     try:
         try:
@@ -124,7 +127,7 @@ def main():
             print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
             print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
             print("then try to run this again.")
-            clean_source_data.doExit()
+            CleanSourceData.doExit()
     except NameError:
         # Python 2
         try:
@@ -134,7 +137,7 @@ def main():
             print("ERROR: We couldn't get write permissions to '"+os.getcwd()+"/"+fileName+"'")
             print("Please check that the directory is writeable and that the file hasn't been locked by another user or program (like Excel),")
             print("then try to run this again.")
-            clean_source_data.doExit()
+            CleanSourceData.doExit()
     # Get path
     print("Please input the directory to your working data files")
     print("Note that paths that aren't descendants of '"+os.getcwd()+"' should be absolute,")
@@ -163,7 +166,7 @@ def main():
                 print("It looks like path '"+feedbackPath+"' doesn't exist, or possibly isn't readable by this program. Please try again.")
                 path = None
         except KeyboardInterrupt:
-            clean_source_data.doExit()
+            CleanSourceData.doExit()
 
     # The path should always end in a slash
     if path[-1:] != "/":
@@ -218,7 +221,7 @@ def main():
         if not hasShallowFiles:
             print("Since you have no shallow files, we can't proceed.")
             print("Check your directories and try again.")
-            clean_source_data.doExit()
+            CleanSourceData.doExit()
         print("So, the shallow files then:")
         for file in useFiles:
             print("\t"+file)
@@ -244,7 +247,7 @@ def main():
             d = "\t"
           else:
             d = ","
-          data = clean_source_data.cleanCSV(file, True, d, messageInterval=5000)
+          data = CleanSourceData.cleanCSV(file, True, d, messageInterval=5000)
           dataList.append(data)
           i += 1
           print("File "+str(i)+" of "+str(len(useFiles))+" complete")
@@ -283,7 +286,7 @@ def main():
                             print("'"+headerTextIndex+"' isn't a valid number")
                             selectedHeader = None
                     except KeyboardInterrupt:
-                        clean_source_data.doExit()
+                        CleanSourceData.doExit()
                 # Change the human number to an index
                 selectedHeader -= 1
                 headerToRemap = headers[selectedHeader]
@@ -305,7 +308,7 @@ def main():
                             print("'"+userChoice+"' isn't a valid option type ", validAnswers)
                             mapChoice = None
                     except KeyboardInterrupt:
-                        clean_source_data.doExit()
+                        CleanSourceData.doExit()
                 if mapChoice is 1:
                     # The default remap function will do
                     remapFn = {
@@ -341,7 +344,7 @@ def main():
                                     print("Sorry, "+str(emptyHeaders)+" headers you provided were empty. Please try again.")
                                     userHeaderMap = None
                         except KeyboardInterrupt:
-                            clean_source_data.doExit()
+                            CleanSourceData.doExit()
                     # Define the map
                     remapFn = {
                         "header": lambda docIndex: userHeaderMap[docIndex],

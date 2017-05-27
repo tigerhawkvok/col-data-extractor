@@ -49,6 +49,10 @@ class CleanSourceData:
 
         self.exitScriptPrompt = "Press Control-c to exit."
 
+    def __call__(self, *args):
+        return self.__init__()
+
+        
     def doExit(self):
         """
         Force a system exit
@@ -119,7 +123,7 @@ class CleanSourceData:
         if newPath is None:
             newPath = self.outputFile
         if colMap is None:
-            colMap = self.outputFile
+            colMap = self.colClean
         import os, sys
         if not os.path.isfile(path):
             print("Invalid file.")
@@ -207,4 +211,7 @@ class CleanSourceData:
                 # Append the cleaned row back on
                 cleanRows.writerow(row)
             return newPath
+CleanSourceData = CleanSourceData()
+# compat
+clean_source_data = CleanSourceData()
 # EOF
