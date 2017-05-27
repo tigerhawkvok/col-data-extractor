@@ -256,10 +256,18 @@ if hasConfirmed:
                         userHeaderMapDirty = uhmRaw.split(",")
                         if len(userHeaderMapDirty) is not len(usedFiles):
                             print("Sorry, that has "+str(len(userHeaderMapDirty))+" of "+str(len(usedFiles))+" files described")
+                            userHeaderMap = None
                         else:
                             userHeaderMap = list()
+                            emptyHeaders = 0
                             for newHeaderLabel in userHeaderMapDirty:
+                                cleanNewHeaderLabel = newHeaderLabel.strip()
+                                if len(cleanNewHeaderLabel) is 0:
+                                    emptyHeaders += 1
                                 userHeaderMap.append(newHeaderLabel.strip())
+                            if emptyHeaders > 0:
+                                print("Sorry, "+str(emptyHeaders)+" headers you provided were empty. Please try again.")
+                                userHeaderMap = None
                     except KeyboardInterrupt:
                         clean_source_data.doExit()
                 # Define the map
