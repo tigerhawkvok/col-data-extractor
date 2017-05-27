@@ -4,6 +4,16 @@ Auto-update
 @
 """
 
+
+def doExit():
+    """
+    Force a system exit
+    """
+    import os,sys
+    print("\n")
+    os._exit(0)
+    sys.exit(0)
+
 def loadURL(http_addr, header = {}):
     try:
         try:
