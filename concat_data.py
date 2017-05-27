@@ -279,6 +279,8 @@ if hasConfirmed:
                     "header": lambda docIndex: userHeaderMap[docIndex]
                 }
         else:
+            # This doesn't really make sense, -- no headers should mean no data.
+            # Leaving it in for (a) completeness and (b) helpful teaching opportunity
             print("No headers found, continuing")
     # Now we have a list of the data as a list of lists
     # Let's make the spreadsheet
