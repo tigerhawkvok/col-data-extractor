@@ -11,8 +11,52 @@ Runs a CLI script to read all acceptable files in a directory, then concatenates
 
 import os, glob, qinput, clean_source_data,yn
 
-def buildGroupedDataset(listOfDatasets):
-    False
+def buildGroupedDataset(listOfDatasets, remapper = None):
+    """
+    Builds a single "sheet" of data from a list of datasets
+
+    @param list listOfDatasets -> a list of lists of rows to be concatenated
+    @return list -> a flat list of the concatenated rows
+    """
+    if type(remapper) is dict:
+        remapFn = remapper
+        # Cases we work with:
+        try:
+            if type(remapFn["header_identifier"]) is str and callable(remapFn["header"]):
+                remapHeaderLabel = remapFn["header_identifier"]
+            else:
+                remapFn = None
+                remapHeaderLabel = None
+        except KeyError:
+            print("WARNING: You specified a remap, but your syntax was invalid.")
+            remapFn = None
+            remapHeaderLabel = None
+    else:
+        remapFn = None
+    # Let's make the spreadsheet
+    sheet = list()
+    # Loop over each individual dataset ...
+    for i, dataSheet in enumerate(listOfDatasets):
+      # Loop over each row in said dataset ...
+      for j, row in enumerate(dataSheet):
+        try:
+          # Check if the row exists already
+          test = sheet[j]
+        except IndexError:
+          # If not, create a new list to represent the row in the
+          # "real" sheet we're creating
+          sheet.append(list())
+        # Loop over each column of this particular row
+        # in this particular datasheet,
+        # adding them to the same row of the "real" master sheet.
+        # This way, we get the datasets to be adjacent
+        for col in row:
+            if j is 0 and remapFn is not None:
+                # Only check the headers ...
+                if col == remapHeaderLabel:
+                    col = remapper["header"](i)
+            sheet[j].append(col)
+    return sheet
 
 
 acceptsExtensions = [
@@ -242,7 +286,8 @@ if hasConfirmed:
             if mapChoice is 1:
                 # The default remap function will do
                 remapFn = {
-                    "header": lambda docIndex: usedFiles[docIndex]
+                    "header": lambda docIndex: usedFiles[docIndex],
+                    "header_identifier": headerToRemap
                 }
             elif mapChoice is 2:
                 # Parse a list from the user ...
@@ -276,36 +321,15 @@ if hasConfirmed:
                         clean_source_data.doExit()
                 # Define the map
                 remapFn = {
-                    "header": lambda docIndex: userHeaderMap[docIndex]
+                    "header": lambda docIndex: userHeaderMap[docIndex],
+                    "header_identifier": headerToRemap
                 }
         else:
             # This doesn't really make sense, -- no headers should mean no data.
             # Leaving it in for (a) completeness and (b) helpful teaching opportunity
             print("No headers found, continuing")
     # Now we have a list of the data as a list of lists
-    # Let's make the spreadsheet
-    sheet = list()
-    # Loop over each individual dataset ...
-    for i, dataSheet in enumerate(dataList):
-      # Loop over each row in said dataset ...
-      for j, row in enumerate(dataSheet):
-        try:
-          # Check if the row exists already
-          test = sheet[j]
-        except IndexError:
-          # If not, create a new list to represent the row in the
-          # "real" sheet we're creating
-          sheet.append(list())
-        # Loop over each column of this particular row
-        # in this particular datasheet,
-        # adding them to the same row of the "real" master sheet.
-        # This way, we get the datasets to be adjacent
-        for col in row:
-            if j is 0 and remapFn is not None:
-                # Only check the headers ...
-                if col == remapHeaderLabel:
-                    col = remapFn["header"](i)
-            sheet[j].append(col)
+    sheet = buildGroupedDataset(dataList, remapFn)
     # Now we have a full sheet
     import csv
     combined = csv.writer(newFile, delimiter=",", quoting=csv.QUOTE_ALL)
