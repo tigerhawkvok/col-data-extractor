@@ -56,6 +56,18 @@ def doExit():
     sys.exit(0)
 
 
+def setDefaults(settingsDict):    
+    """
+    Override the defaults for this function programmatically
+
+    @param dict settingsDict ->
+    """
+    global renameColumns, canonicalColumn, colClean, columnsToImport
+    for setting, value in settingsDict:
+        # Override a global
+        pass
+    
+
 def formatData(data):
     try:
         return data.lower().strip()
