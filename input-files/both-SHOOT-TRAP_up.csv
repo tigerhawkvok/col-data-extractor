@@ -1,0 +1,4 @@
+,rownames(tmp[tmp$adj.P.Val < 0.05 & tmp$logFC > 0, ])
+1,Solyc02g093910
+2,Solyc03g123610
+3,Solyc07g054780
